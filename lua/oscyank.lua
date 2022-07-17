@@ -68,22 +68,22 @@ function M.osc52(text)
   end
 end
 
-function M.operator_copy_cb(type)
+function M.copy_operator_cb(type)
   local text = get_text('operator', type)
   M.osc52(text)
 end
 
-function M.operator_copy()
-  vim.go.operatorfunc = "v:lua.require'oscyank'.operator_copy_cb"
+function M.copy_operator()
+  vim.go.operatorfunc = "v:lua.require'oscyank'.copy_operator_cb"
   return 'g@'
 end
 
-function M.visual_copy()
+function M.copy_visual()
   local text = get_text('visual', vim.fn.visualmode())
   M.osc52(text)
 end
 
-function M.register_copy(register)
+function M.copy_register(register)
   local text = get_register(register)
   M.osc52(text)
 end
