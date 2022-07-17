@@ -17,8 +17,15 @@ local function echo(text, hl_group)
   vim.api.nvim_echo({{fmt('[oscyank] %s', text), hl_group or 'Normal'}}, false, {})
 end
 
+local function get_register(register)
+  local text
+  text = vim.fn.getreg(register)
+  text = options.trim and vim.trim(text) or text
+  return text
+end
+
 local function get_text(mode, type)
-  local command = fmt('noautocmd keepjumps normal! %s', commands[mode][type])
+  local command = fmt('keepjumps normal! %s', commands[mode][type])
   local text = ''
 
   -- Save user settings
@@ -31,12 +38,7 @@ local function get_text(mode, type)
   vim.go.clipboard = ''
   vim.go.selection = 'inclusive'
   vim.cmd(fmt('silent execute "%s"', command))
-  text = vim.fn.getreg('"')
-
-  -- Trim text
-  if options.trim then
-    text = vim.trim(text)
-  end
+  text = get_register('"')
 
   -- Restore user settings
   vim.go.clipboard = clipboard
@@ -48,7 +50,8 @@ local function get_text(mode, type)
   return text
 end
 
-local function osc52(text)
+-------------------- PUBLIC --------------------------------
+function M.osc52(text)
   if #text > options.max_length then
     echo(fmt('Selection is too big: length is %d, limit is %d', #text, options.max_length), 'WarningMsg')
     return
@@ -65,10 +68,9 @@ local function osc52(text)
   end
 end
 
--------------------- PUBLIC --------------------------------
 function M.operator_copy_cb(type)
   local text = get_text('operator', type)
-  osc52(text)
+  M.osc52(text)
 end
 
 function M.operator_copy()
@@ -78,7 +80,12 @@ end
 
 function M.visual_copy()
   local text = get_text('visual', vim.fn.visualmode())
-  osc52(text)
+  M.osc52(text)
+end
+
+function M.register_copy(register)
+  local text = get_register(register)
+  M.osc52(text)
 end
 
 -------------------- SETUP ---------------------------------
@@ -86,6 +93,7 @@ function M.setup(user_options)
   if user_options then
     options = vim.tbl_extend('force', options, user_options)
   end
+  vim.g.loaded_oscyank = 1
 end
 
 ------------------------------------------------------------
