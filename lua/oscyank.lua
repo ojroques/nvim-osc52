@@ -3,7 +3,7 @@ local base64 = require('base64')
 local fmt = string.format
 local options = {
   max_length = 1000000,  -- Maximum length of selection
-  silent = false,        -- Disable message on copy
+  silent = false,        -- Disable message on successful copy
 }
 local M = {}
 
@@ -13,8 +13,8 @@ local function echo(text, hl_group)
 end
 
 local function get_text(type)
-  local commands = {block = "`[\\<C-v>`]y", char = "`[v`]y", line = "'[V']y"}
-  local command = fmt('noautocmd keepjumps normal! %s', commands[type])
+  local types = {block = "`[\\<C-v>`]y", char = "`[v`]y", line = "'[V']y"}
+  local command = fmt('noautocmd keepjumps normal! %s', types[type])
   local text = ''
 
   -- Save user settings
@@ -26,7 +26,7 @@ local function get_text(type)
   -- Copy text
   vim.go.clipboard = ''
   vim.go.selection = 'inclusive'
-  vim.cmd(fmt("silent execute '%s'", command))
+  vim.cmd(fmt('silent execute "%s"', command))
   text = vim.fn.getreg('"')
 
   -- Restore user settings
