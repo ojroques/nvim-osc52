@@ -14,9 +14,9 @@ use {'ojroques/nvim-oscyank'}
 Add this to your Neovim config:
 ```lua
 require('oscyank').setup {}
-vim.keymap.set('n', '<leader>c', require('oscyank').operator_copy, {expr = true})
+vim.keymap.set('n', '<leader>c', require('oscyank').copy_operator, {expr = true})
 vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
-vim.keymap.set('x', '<leader>c', require('oscyank').visual_copy)
+vim.keymap.set('x', '<leader>c', require('oscyank').copy_visual)
 ```
 
 In normal mode, `<leader>c` is an operator that will copy the given text to the
