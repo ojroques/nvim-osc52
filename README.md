@@ -21,7 +21,6 @@ use {'ojroques/nvim-oscyank'}
 ## Usage
 Add this to your config (assuming Neovim 0.7+):
 ```lua
-require('oscyank').setup {}
 vim.keymap.set('n', '<leader>c', require('oscyank').copy_operator, {expr = true})
 vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
 vim.keymap.set('x', '<leader>c', require('oscyank').copy_visual)
@@ -58,4 +57,8 @@ vim.g.clipboard = {
   copy = {['+'] = copy, ['*'] = copy},
   paste = {['+'] = paste, ['*'] = paste},
 }
+
+-- Now the '+' register will copy to system clipboard using OSC52
+vim.keymap.set('n', '<leader>c', '"+y')
+vim.keymap.set('n', '<leader>cc', '"+yy')
 ```
