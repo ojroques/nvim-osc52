@@ -45,7 +45,7 @@ You can use the plugin as your clipboard provider, see `:h provider-clipboard`
 for more details. Simply add these lines to your Neovim config:
 ```lua
 local function copy(lines, _)
-  require('osc52').osc52(table.concat(lines, '\n'))
+  require('osc52').copy(table.concat(lines, '\n'))
 end
 
 local function paste()
