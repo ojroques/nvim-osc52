@@ -42,7 +42,7 @@ local function get_text(mode, type)
 end
 
 -------------------- PUBLIC --------------------------------
-function M.osc52(text)
+function M.copy(text)
   text = options.trim and vim.trim(text) or text
 
   if #text > options.max_length then
@@ -63,7 +63,7 @@ end
 
 function M.copy_operator_cb(type)
   local text = get_text('operator', type)
-  M.osc52(text)
+  M.copy(text)
 end
 
 function M.copy_operator()
@@ -73,12 +73,12 @@ end
 
 function M.copy_visual()
   local text = get_text('visual', vim.fn.visualmode())
-  M.osc52(text)
+  M.copy(text)
 end
 
 function M.copy_register(register)
   local text = vim.fn.getreg(register)
-  M.osc52(text)
+  M.copy(text)
 end
 
 -------------------- SETUP ---------------------------------
