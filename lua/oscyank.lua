@@ -18,9 +18,6 @@ local function echo(text, hl_group)
 end
 
 local function get_text(mode, type)
-  local command = fmt('keepjumps normal! %s', commands[mode][type])
-  local text = ''
-
   -- Save user settings
   local clipboard = vim.go.clipboard
   local selection = vim.go.selection
@@ -30,8 +27,9 @@ local function get_text(mode, type)
   -- Retrieve text
   vim.go.clipboard = ''
   vim.go.selection = 'inclusive'
+  local command = fmt('keepjumps normal! %s', commands[mode][type])
   vim.cmd(fmt('silent execute "%s"', command))
-  text = vim.fn.getreg('"')
+  local text = vim.fn.getreg('"')
 
   -- Restore user settings
   vim.go.clipboard = clipboard
@@ -40,7 +38,7 @@ local function get_text(mode, type)
   vim.fn.setpos("'<", visual_marks[1])
   vim.fn.setpos("'>", visual_marks[2])
 
-  return text
+  return text or ''
 end
 
 -------------------- PUBLIC --------------------------------
