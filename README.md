@@ -1,4 +1,4 @@
-# nvim-oscyank
+# nvim-osc52
 
 A Neovim plugin to copy text to the system clipboard from anywhere using the
 ANSI OSC52 sequence.
@@ -9,21 +9,21 @@ from anywhere including from remote SSH sessions. The only requirement is that
 your terminal must support OSC52 which is the case for most modern terminal
 emulators.
 
-nvim-oscyank is basically a rewrite of
+nvim-osc52 is basically a rewrite of
 [vim-oscyank](https://github.com/ojroques/vim-oscyank) in Lua.
 
 ## Installation
 With [packer.nvim](https://github.com/wbthomason/packer.nvim):
 ```lua
-use {'ojroques/nvim-oscyank'}
+use {'ojroques/nvim-osc52'}
 ```
 
 ## Usage
 Add this to your config (assuming Neovim 0.7+):
 ```lua
-vim.keymap.set('n', '<leader>c', require('oscyank').copy_operator, {expr = true})
+vim.keymap.set('n', '<leader>c', require('osc52').copy_operator, {expr = true})
 vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
-vim.keymap.set('x', '<leader>c', require('oscyank').copy_visual)
+vim.keymap.set('x', '<leader>c', require('osc52').copy_visual)
 ```
 
 Using these settings, in normal mode `<leader>c` is an operator that will copy
@@ -33,19 +33,19 @@ current selection.
 ## Configuration
 The default options are:
 ```lua
-require('oscyank').setup {
+require('osc52').setup {
   max_length = 1000000,  -- Maximum length of selection
   silent = false,        -- Disable message on successful copy
   trim = true,           -- Trim text before copy
 }
 ```
 
-## Using nvim-oscyank as clipboard provider
+## Using nvim-osc52 as clipboard provider
 You can use the plugin as your clipboard provider, see `:h provider-clipboard`
 for more details. Simply add these lines to your Neovim config:
 ```lua
 local function copy(lines, _)
-  require('oscyank').osc52(table.concat(lines, '\n'))
+  require('osc52').osc52(table.concat(lines, '\n'))
 end
 
 local function paste()
@@ -53,7 +53,7 @@ local function paste()
 end
 
 vim.g.clipboard = {
-  name = 'oscyank',
+  name = 'osc52',
   copy = {['+'] = copy, ['*'] = copy},
   paste = {['+'] = paste, ['*'] = paste},
 }

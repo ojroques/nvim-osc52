@@ -14,7 +14,7 @@ local M = {}
 
 -------------------- UTILS ---------------------------------
 local function echo(text, hl_group)
-  vim.api.nvim_echo({{fmt('[oscyank] %s', text), hl_group or 'Normal'}}, false, {})
+  vim.api.nvim_echo({{fmt('[osc52] %s', text), hl_group or 'Normal'}}, false, {})
 end
 
 local function get_text(mode, type)
@@ -67,7 +67,7 @@ function M.copy_operator_cb(type)
 end
 
 function M.copy_operator()
-  vim.go.operatorfunc = "v:lua.require'oscyank'.copy_operator_cb"
+  vim.go.operatorfunc = "v:lua.require'osc52'.copy_operator_cb"
   return 'g@'
 end
 
