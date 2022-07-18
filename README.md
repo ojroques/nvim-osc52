@@ -18,6 +18,9 @@ With [packer.nvim](https://github.com/wbthomason/packer.nvim):
 use {'ojroques/nvim-osc52'}
 ```
 
+If you are using tmux, run these steps first: [enabling OSC52 in
+tmux](https://github.com/tmux/tmux/wiki/Clipboard#quick-summary).
+
 ## Usage
 Add this to your config (assuming Neovim 0.7+):
 ```lua
