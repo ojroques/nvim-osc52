@@ -41,9 +41,21 @@ local function get_text(mode, type)
   return text or ''
 end
 
+local function trim_text(text)
+  local i, j = string.find(text, '^%s+')
+
+  -- Remove common indent from all lines
+  if i then
+    local indent = string.rep('%s', j - i + 1)
+    text = string.gsub(text, fmt('\n%s', indent), '\n')
+  end
+
+  return vim.trim(text)
+end
+
 -------------------- PUBLIC --------------------------------
 function M.copy(text)
-  text = options.trim and vim.trim(text) or text
+  text = options.trim and trim_text(text) or text
 
   if #text > options.max_length then
     echo(fmt('Selection is too big: length is %d, limit is %d', #text, options.max_length), 'WarningMsg')
