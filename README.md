@@ -1,13 +1,15 @@
 # nvim-osc52
 
-A Neovim plugin to copy text to the system clipboard from anywhere using the
-ANSI OSC52 sequence.
+A Neovim plugin to copy text to the system clipboard using the ANSI OSC52
+sequence.
 
-When this sequence is emitted by Neovim, the terminal will copy the given text
-into the system clipboard. This is totally location-independent, users can copy
-from anywhere including from remote SSH sessions. The only requirement is that
-your terminal must support OSC52 which is the case for most modern terminal
-emulators.
+The plugin wraps a piece of text inside an OSC52 sequence and writes it to
+Neovim's stderr. When your terminal detects the OSC52 sequence, it will copy the
+text into the system clipboard.
+
+This is totally location-independent, you can copy text from anywhere including
+from remote SSH sessions. The only requirement is that your terminal must
+support OSC52 which is the case for most modern terminal emulators.
 
 nvim-osc52 is basically a rewrite of
 [vim-oscyank](https://github.com/ojroques/vim-oscyank) in Lua.
@@ -39,7 +41,7 @@ The default options are:
 require('osc52').setup {
   max_length = 1000000,  -- Maximum length of selection
   silent = false,        -- Disable message on successful copy
-  trim = true,           -- Trim text before copy
+  trim = false,          -- Trim text before copy
 }
 ```
 

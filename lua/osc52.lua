@@ -8,7 +8,7 @@ local commands = {
 local options = {
   max_length = 1000000,  -- Maximum length of selection
   silent = false,        -- Disable message on successful copy
-  trim = true,           -- Trim text before copy
+  trim = false,          -- Trim text before copy
 }
 local M = {}
 
