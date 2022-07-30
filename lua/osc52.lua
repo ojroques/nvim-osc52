@@ -6,9 +6,9 @@ local commands = {
   visual = {['V'] = 'y', ['v'] = 'y', [''] = 'y'},
 }
 local options = {
-  max_length = 1000000,  -- Maximum length of selection
-  silent = false,        -- Disable message on successful copy
-  trim = false,          -- Trim text before copy
+  max_length = 0,  -- Maximum length of selection (0 for no limit)
+  silent = false,  -- Disable message on successful copy
+  trim = false,    -- Trim text before copy
 }
 local M = {}
 
@@ -57,7 +57,7 @@ end
 function M.copy(text)
   text = options.trim and trim_text(text) or text
 
-  if #text > options.max_length then
+  if options.max_length > 0 and #text > options.max_length then
     echo(fmt('Selection is too big: length is %d, limit is %d', #text, options.max_length), 'WarningMsg')
     return
   end
