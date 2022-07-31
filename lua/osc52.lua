@@ -64,7 +64,13 @@ function M.copy(text)
 
   local text_b64 = base64.enc(text)
   local osc = fmt('%s]52;c;%s%s', string.char(0x1b), text_b64, string.char(0x07))
-  local success = vim.fn.chansend(vim.v.stderr, osc)
+  local success = false
+
+  if vim.fn.filewritable('/dev/fd/2') then
+    success = vim.fn.writefile({osc}, '/dev/fd/2', 'b') == 0
+  else
+    success = vim.fn.chansend(vim.v.stderr, osc) > 0
+  end
 
   if not success then
     echo('Failed to copy selection', 'ErrorMsg')
