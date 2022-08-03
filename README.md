@@ -31,9 +31,9 @@ vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
 vim.keymap.set('x', '<leader>c', require('osc52').copy_visual)
 ```
 
-Using these settings, in normal mode `<leader>c` is an operator that will copy
-the given text to the clipboard. In visual mode `<leader>c` will copy the
-current selection.
+Using these settings, in normal mode <kbd>\<leader\>c</kbd> is an operator that
+will copy the given text to the clipboard. In visual mode <kbd>\<leader\>c</kbd>
+will copy the current selection.
 
 ## Configuration
 The default options are:
@@ -67,3 +67,13 @@ vim.g.clipboard = {
 vim.keymap.set('n', '<leader>c', '"+y')
 vim.keymap.set('n', '<leader>cc', '"+yy')
 ```
+
+Note that if you set your clipboard provider like the example above, copying
+text from outside Neovim and pasting with <kbd>p</kbd> won't work. But you can
+still use the paste shortcut of your terminal emulator (usually
+<kbd>ctrl+shift+v</kbd>).
+
+If you want to paste the system clipboard with <kbd>p</kbd>, you should ignore
+this section and configure yourself the clipboard provider so that in the end
+you can paste with <kbd>p</kbd>. Then for copying, simply use the mappings in
+[Usage](#usage).
