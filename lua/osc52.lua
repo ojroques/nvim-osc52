@@ -3,7 +3,7 @@ local base64 = require('base64')
 local fmt = string.format
 local commands = {
   operator = {block = "`[\\<C-v>`]y", char = "`[v`]y", line = "'[V']y"},
-  visual = {['V'] = 'y', ['v'] = 'y', [''] = 'y'},
+  visual = {[''] = 'y', ['V'] = 'y', ['v'] = 'y', [''] = 'y'},
 }
 local options = {
   max_length = 0,  -- Maximum length of selection (0 for no limit)
