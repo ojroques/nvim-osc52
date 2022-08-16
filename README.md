@@ -31,9 +31,11 @@ vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
 vim.keymap.set('x', '<leader>c', require('osc52').copy_visual)
 ```
 
-Using these settings, in normal mode <kbd>\<leader\>c</kbd> is an operator that
-will copy the given text to the clipboard. In visual mode <kbd>\<leader\>c</kbd>
-will copy the current selection.
+Using these settings:
+* In normal mode, <kbd>\<leader\>c</kbd> is an operator that will copy the given
+  text to the clipboard.
+* In normal mode, <kbd>\<leader\>cc</kbd> will copy the current line.
+* In visual mode, <kbd>\<leader\>c</kbd> will copy the current selection.
 
 ## Configuration
 The default options are:
@@ -74,6 +76,5 @@ still use the paste shortcut of your terminal emulator (usually
 <kbd>ctrl+shift+v</kbd>).
 
 If you want to paste the system clipboard with <kbd>p</kbd>, you should ignore
-this section and configure yourself the clipboard provider so that in the end
-you can paste with <kbd>p</kbd>. Then for copying, simply use the mappings in
-[Usage](#usage).
+this section and configure yourself the clipboard provider. Then for copying,
+simply use the mappings in [Usage](#usage).
