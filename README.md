@@ -20,8 +20,12 @@ With [packer.nvim](https://github.com/wbthomason/packer.nvim):
 use {'ojroques/nvim-osc52'}
 ```
 
-If you are using tmux, run these steps first: [enabling OSC52 in
-tmux](https://github.com/tmux/tmux/wiki/Clipboard#quick-summary).
+**If you are using tmux**, run these steps first: [enabling OSC52 in
+tmux](https://github.com/tmux/tmux/wiki/Clipboard#quick-summary). Then set
+`set-clipboard` to `on` instead of `external`:
+```bash
+set -s set-clipboard on  # 'external' may not work
+```
 
 ## Usage
 Add this to your config (assuming Neovim 0.7+):
