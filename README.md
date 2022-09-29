@@ -21,11 +21,8 @@ use {'ojroques/nvim-osc52'}
 ```
 
 **If you are using tmux**, run these steps first: [enabling OSC52 in
-tmux](https://github.com/tmux/tmux/wiki/Clipboard#quick-summary). Then set
-`set-clipboard` to `on` instead of `external`:
-```bash
-set -s set-clipboard on  # 'external' may not work
-```
+tmux](https://github.com/tmux/tmux/wiki/Clipboard#quick-summary). Then make sure
+`set-clipboard` is set to `on`: `set -s set-clipboard on`.
 
 ## Usage
 Add this to your config (assuming Neovim 0.7+):
@@ -35,7 +32,7 @@ vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
 vim.keymap.set('x', '<leader>c', require('osc52').copy_visual)
 ```
 
-Using these settings:
+Using these mappings:
 * In normal mode, <kbd>\<leader\>c</kbd> is an operator that will copy the given
   text to the clipboard.
 * In normal mode, <kbd>\<leader\>cc</kbd> will copy the current line.
@@ -78,7 +75,3 @@ Note that if you set your clipboard provider like the example above, copying
 text from outside Neovim and pasting with <kbd>p</kbd> won't work. But you can
 still use the paste shortcut of your terminal emulator (usually
 <kbd>ctrl+shift+v</kbd>).
-
-If you want to paste the system clipboard with <kbd>p</kbd>, you should ignore
-this section and configure yourself the clipboard provider. Then for copying,
-simply use the mappings in [Usage](#usage).
