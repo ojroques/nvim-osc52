@@ -97,3 +97,18 @@ vim.cmd([[
   augroup END
 ]])
 ```
+
+## Using nvim-osc52 only in SSH
+
+If you want to load this plugin only when connected via SSH, add the following
+`cond` to the Packer configuration for this plugin:
+
+```lua
+use {
+  'ojroques/nvim-osc52',
+  cond = function()
+    local ssh_connection = vim.env.SSH_CONNECTION
+    return ssh_connection ~= nil and ssh_connection ~= ""
+  end,
+}
+```
