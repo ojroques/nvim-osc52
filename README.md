@@ -75,3 +75,25 @@ Note that if you set your clipboard provider like the example above, copying
 text from outside Neovim and pasting with <kbd>p</kbd> won't work. But you can
 still use the paste shortcut of your terminal emulator (usually
 <kbd>ctrl+shift+v</kbd>).
+
+## Automatically yanking using nvim-osc52
+
+Using the `:h TextYankPost` autocommand, you can use nvim-osc52 during whatever
+yank commands.
+
+```lua
+vim.api.nvim_create_user_command("OSCYank", function()
+  local text = vim.fn.getreg("+")
+  require("osc52").copy(text)
+end, {
+  bar = true,
+})
+
+-- NOTE: cannot use Lua API to create the autocmd because it does not support accessing v:event
+vim.cmd([[
+  augroup OSCYank
+    autocmd!
+    autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '+' | OSCYank | endif
+  augroup END
+]])
+```
