@@ -75,3 +75,19 @@ Note that if you set your clipboard provider like the example above, copying
 text from outside Neovim and pasting with <kbd>p</kbd> won't work. But you can
 still use the paste shortcut of your terminal emulator (usually
 <kbd>ctrl+shift+v</kbd>).
+
+## Advanced usage
+The following methods are also available:
+* `require('osc52').copy(text)`: copy text `text`
+* `require('osc52').copy_register(register)`: copy text from register `register`
+
+For instance, to automatically copy text that was yanked into register `c`:
+```lua
+function copy()
+  if vim.v.event.operator == 'y' and vim.v.event.regname == 'c' then
+    require('osc52').copy_register('c')
+  end
+end
+
+vim.api.nvim_create_autocmd('TextYankPost', {callback = copy})
+```
