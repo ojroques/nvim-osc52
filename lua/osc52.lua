@@ -66,7 +66,7 @@ function M.copy(text)
   local osc = fmt('%s]52;c;%s%s', string.char(0x1b), text_b64, string.char(0x07))
   local success = false
 
-  if vim.fn.filewritable('/dev/fd/2') then
+  if vim.fn.filewritable('/dev/fd/2') == 1 then
     success = vim.fn.writefile({osc}, '/dev/fd/2', 'b') == 0
   else
     success = vim.fn.chansend(vim.v.stderr, osc) > 0
