@@ -20,20 +20,17 @@ end
 local function get_text(mode, type)
   -- Save user settings
   local clipboard = vim.go.clipboard
-  local selection = vim.go.selection
   local register = vim.fn.getreginfo('"')
   local visual_marks = {vim.fn.getpos("'<"), vim.fn.getpos("'>")}
 
   -- Retrieve text
   vim.go.clipboard = ''
-  vim.go.selection = 'inclusive'
   local command = fmt('keepjumps normal! %s', commands[mode][type])
   vim.cmd(fmt('silent execute "%s"', command))
   local text = vim.fn.getreg('"')
 
   -- Restore user settings
   vim.go.clipboard = clipboard
-  vim.go.selection = selection
   vim.fn.setreg('"', register)
   vim.fn.setpos("'<", visual_marks[1])
   vim.fn.setpos("'>", visual_marks[2])
