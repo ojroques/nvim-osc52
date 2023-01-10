@@ -1,5 +1,5 @@
 -------------------- VARIABLES -----------------------------
-local base64 = require('base64')
+local base64 = require('osc52.base64')
 local fmt = string.format
 local commands = {
   operator = {block = "`[\\<C-v>`]y", char = "`[v`]y", line = "'[V']y"},
