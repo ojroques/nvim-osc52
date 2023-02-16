@@ -50,6 +50,18 @@ local function trim_text(text)
   return vim.trim(text)
 end
 
+local function write(osc)
+  local success = false
+
+  if vim.fn.filewritable('/dev/fd/2') == 1 then
+    success = vim.fn.writefile({osc}, '/dev/fd/2', 'b') == 0
+  else
+    success = vim.fn.chansend(vim.v.stderr, osc) > 0
+  end
+
+  return success
+end
+
 -------------------- PUBLIC --------------------------------
 function M.copy(text)
   text = options.trim and trim_text(text) or text
@@ -61,18 +73,21 @@ function M.copy(text)
 
   local text_b64 = base64.enc(text)
   local osc = fmt('%s]52;c;%s%s', string.char(0x1b), text_b64, string.char(0x07))
-  local success = false
-
-  if vim.fn.filewritable('/dev/fd/2') == 1 then
-    success = vim.fn.writefile({osc}, '/dev/fd/2', 'b') == 0
-  else
-    success = vim.fn.chansend(vim.v.stderr, osc) > 0
-  end
+  local success = write(osc)
 
   if not success then
     echo('Failed to copy selection', 'ErrorMsg')
   elseif not options.silent then
     echo(fmt('%d characters copied', #text))
+  end
+end
+
+function M.paste()
+  local osc = fmt('%s]52;c;?%s', string.char(0x1b), string.char(0x07))
+  local success = write(osc)
+
+  if not success then
+    echo('Failed to paste', 'ErrorMsg')
   end
 end
 
