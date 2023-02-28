@@ -80,6 +80,8 @@ function M.copy(text)
   elseif not options.silent then
     echo(fmt('%d characters copied', #text))
   end
+
+  return success
 end
 
 function M.paste()
@@ -89,11 +91,13 @@ function M.paste()
   if not success then
     echo('Failed to paste', 'ErrorMsg')
   end
+
+  return success
 end
 
 function M.copy_operator_cb(type)
   local text = get_text('operator', type)
-  M.copy(text)
+  return M.copy(text)
 end
 
 function M.copy_operator()
@@ -103,12 +107,12 @@ end
 
 function M.copy_visual()
   local text = get_text('visual', vim.fn.visualmode())
-  M.copy(text)
+  return M.copy(text)
 end
 
 function M.copy_register(register)
   local text = vim.fn.getreg(register)
-  M.copy(text)
+  return M.copy(text)
 end
 
 -------------------- SETUP ---------------------------------
