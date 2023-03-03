@@ -11,11 +11,11 @@ This is totally location-independent, you can copy text from anywhere including
 from remote SSH sessions. The only requirement is that your terminal must
 support OSC52 which is the case for most modern terminal emulators.
 
-nvim-osc52 is basically a rewrite of
+nvim-osc52 is a rewrite of
 [vim-oscyank](https://github.com/ojroques/vim-oscyank) in Lua.
 
 ## Installation
-With [packer.nvim](https://github.com/wbthomason/packer.nvim):
+With [packer.nvim](https://github.com/wbthomason/packer.nvim) for instance:
 ```lua
 use {'ojroques/nvim-osc52'}
 ```
@@ -29,7 +29,7 @@ Add this to your config (assuming Neovim 0.7+):
 ```lua
 vim.keymap.set('n', '<leader>c', require('osc52').copy_operator, {expr = true})
 vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
-vim.keymap.set('x', '<leader>c', require('osc52').copy_visual)
+vim.keymap.set('v', '<leader>c', require('osc52').copy_visual)
 ```
 
 Using these mappings:
@@ -39,12 +39,12 @@ Using these mappings:
 * In visual mode, <kbd>\<leader\>c</kbd> will copy the current selection.
 
 ## Configuration
-The default options are:
+The available options with their default values are:
 ```lua
 require('osc52').setup {
-  max_length = 0,  -- Maximum length of selection (0 for no limit)
-  silent = false,  -- Disable message on successful copy
-  trim = false,    -- Trim text before copy
+  max_length = 0,      -- Maximum length of selection (0 for no limit)
+  silent     = false,  -- Disable message on successful copy
+  trim       = false,  -- Trim surrounding whitespaces before copy
 }
 ```
 
@@ -53,11 +53,11 @@ The following methods are also available:
 * `require('osc52').copy(text)`: copy text `text`
 * `require('osc52').copy_register(register)`: copy text from register `register`
 
-For instance, to automatically copy text that was yanked into register `c`:
+For instance, to automatically copy text that was yanked into register `+`:
 ```lua
 function copy()
-  if vim.v.event.operator == 'y' and vim.v.event.regname == 'c' then
-    require('osc52').copy_register('c')
+  if vim.v.event.operator == 'y' and vim.v.event.regname == '+' then
+    require('osc52').copy_register('+')
   end
 end
 
@@ -66,7 +66,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {callback = copy})
 
 ## Using nvim-osc52 as clipboard provider
 You can use the plugin as your clipboard provider, see `:h provider-clipboard`
-for more details. Simply add these lines to your Neovim config:
+for more details. Simply add these lines to your config:
 ```lua
 local function copy(lines, _)
   require('osc52').copy(table.concat(lines, '\n'))
