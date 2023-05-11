@@ -22,7 +22,11 @@ local function get_text(mode, type)
   -- Save user settings
   local clipboard = vim.go.clipboard
   local register = vim.fn.getreginfo('"')
-  local visual_marks = {vim.fn.getpos("'<"), vim.fn.getpos("'>")}
+
+  -- Save previous visual marks in operator mode
+  if mode == 'operator' then
+    local visual_marks = {vim.fn.getpos("'<"), vim.fn.getpos("'>")}
+  end
 
   -- Retrieve text
   vim.go.clipboard = ''
@@ -33,8 +37,12 @@ local function get_text(mode, type)
   -- Restore user settings
   vim.go.clipboard = clipboard
   vim.fn.setreg('"', register)
-  vim.fn.setpos("'<", visual_marks[1])
-  vim.fn.setpos("'>", visual_marks[2])
+
+  -- Restore previous visual marks in operator mode
+  if mode == 'operator' then
+    vim.fn.setpos("'<", visual_marks[1])
+    vim.fn.setpos("'>", visual_marks[2])
+  end
 
   return text or ''
 end
