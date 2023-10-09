@@ -20,9 +20,22 @@ With [packer.nvim](https://github.com/wbthomason/packer.nvim) for instance:
 use {'ojroques/nvim-osc52'}
 ```
 
-**If you are using tmux**, run these steps first: [enabling OSC52 in
-tmux](https://github.com/tmux/tmux/wiki/Clipboard#quick-summary). Then make sure
-`set-clipboard` is set to `on`: `set -s set-clipboard on`.
+### Configuration for tmux
+
+If you are using tmux, run these steps first: [enabling OSC52 in
+tmux](https://github.com/tmux/tmux/wiki/Clipboard#quick-summary).
+
+Then, you can use the tmux option `set-clipboard on` or `allow-passthrough on`.
+
+For tmux versions before 3.3a, you will need to use the `set-clipboard` option:
+`set -s set-clipboard on`
+
+For tmux versions starting with 3.3a, you can configure tmux to allow passthrough
+of escape sequences (`set -g allow-passthrough on`). With this option you can leave
+`set-clipboard` to its default (`external`).
+The allow-passthrough option works well for nested tmux sessions or when running
+tmux on both the local and remote servers. When using allow-passthrough, be sure
+to enable `tmux_passthrough` for this plugin.
 
 ## Usage
 Add this to your config (assuming Neovim 0.7+):
@@ -42,9 +55,10 @@ Using these mappings:
 The available options with their default values are:
 ```lua
 require('osc52').setup {
-  max_length = 0,      -- Maximum length of selection (0 for no limit)
-  silent     = false,  -- Disable message on successful copy
-  trim       = false,  -- Trim surrounding whitespaces before copy
+  max_length = 0,           -- Maximum length of selection (0 for no limit)
+  silent = false,           -- Disable message on successful copy
+  trim = false,             -- Trim surrounding whitespaces before copy
+  tmux_passthrough = false, -- Use tmux passthrough (requires tmux: set -g allow-passthrough on)
 }
 ```
 

@@ -6,9 +6,10 @@ local commands = {
   visual = {[''] = 'y', ['V'] = 'y', ['v'] = 'y', [''] = 'y'},
 }
 local options = {
-  max_length = 0,  -- Maximum length of selection (0 for no limit)
-  silent = false,  -- Disable message on successful copy
-  trim = false,    -- Trim surrounding whitespaces before copy
+  max_length = 0,           -- Maximum length of selection (0 for no limit)
+  silent = false,           -- Disable message on successful copy
+  trim = false,             -- Trim surrounding whitespaces before copy
+  tmux_passthrough = false, -- Use tmux passthrough (requires tmux: set -g allow-passthrough on)
   osc52 = fmt('%s]52;c;%%s%s', string.char(0x1b), string.char(0x07)),
 }
 local M = {}
@@ -83,12 +84,17 @@ function M.copy(text)
 
   local text_b64 = base64.enc(text)
   local osc52 = fmt(options.osc52, text_b64)
+  local msg = '%d characters copied'
+  if options.tmux_passthrough and os.getenv("TMUX") then
+    osc52 = fmt('%sPtmux;%s%s%s\\', string.char(0x1b), string.char(0x1b), osc52, string.char(0x1b))
+    msg = msg .. ' (tmux passthrough)'
+  end
   local success = write(osc52)
 
   if not success then
     echo('Failed to copy selection', 'ErrorMsg')
   elseif not options.silent then
-    echo(fmt('%d characters copied', #text))
+    echo(fmt(msg, #text))
   end
 
   return success
