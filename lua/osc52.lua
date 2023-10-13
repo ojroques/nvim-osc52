@@ -10,7 +10,7 @@ local options = {
   silent = false,           -- Disable message on successful copy
   trim = false,             -- Trim surrounding whitespaces before copy
   tmux_passthrough = false, -- Use tmux passthrough (requires tmux: set -g allow-passthrough on)
-  osc52 = fmt('%s]52;c;%%s%s', string.char(0x1b), string.char(0x07)),
+  osc52 = '\27]52;c;%s\7',
 }
 local M = {}
 
@@ -86,7 +86,7 @@ function M.copy(text)
   local osc52 = fmt(options.osc52, text_b64)
   local msg = '%d characters copied'
   if options.tmux_passthrough and os.getenv("TMUX") then
-    osc52 = fmt('%sPtmux;%s%s%s\\', string.char(0x1b), string.char(0x1b), osc52, string.char(0x1b))
+    osc52 = fmt('\27Ptmux;\27%s\27\\', osc52)
     msg = msg .. ' (tmux passthrough)'
   end
   local success = write(osc52)
