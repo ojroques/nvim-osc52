@@ -1,40 +1,37 @@
-#!/usr/bin/env lua
--- Lua 5.1+ base64 v3.0 (c) 2009 by Alex Kloss <alexthkloss@web.de>
--- licensed under the terms of the LGPL2
+local lshift = require('bit').lshift
+local rshift = require('bit').rshift
+local band = require('bit').band
+local bor = require('bit').bor
 
 local M = {}
 
--- character table string
-local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+local base64 = {
+  [0] = 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+  'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/',
+}
+local mask = 0x3f -- 0b00111111
 
--- encoding
-function M.enc(data)
-  return ((data:gsub('.', function(x)
-    local r,b='',x:byte()
-    for i=8,1,-1 do r=r..(b%2^i-b%2^(i-1)>0 and '1' or '0') end
-    return r;
-  end)..'0000'):gsub('%d%d%d?%d?%d?%d?', function(x)
-    if (#x < 6) then return '' end
-    local c=0
-    for i=1,6 do c=c+(x:sub(i,i)=='1' and 2^(6-i) or 0) end
-    return b:sub(c+1,c+1)
-  end)..({ '', '==', '=' })[#data%3+1])
-end
+function M.enc(s)
+  local len = string.len(s)
+  local output = {}
 
--- decoding
-function M.dec(data)
-  data = string.gsub(data, '[^'..b..'=]', '')
-  return (data:gsub('.', function(x)
-    if (x == '=') then return '' end
-    local r,f='',(b:find(x)-1)
-    for i=6,1,-1 do r=r..(f%2^i-f%2^(i-1)>0 and '1' or '0') end
-    return r;
-  end):gsub('%d%d%d?%d?%d?%d?%d?%d?', function(x)
-    if (#x ~= 8) then return '' end
-    local c=0
-    for i=1,8 do c=c+(x:sub(i,i)=='1' and 2^(8-i) or 0) end
-    return string.char(c)
-  end))
+  for i = 1, len, 3 do
+    local byte1, byte2, byte3 = string.byte(s, i, i + 2)
+    local bits = bor(lshift(byte1, 16), lshift(byte2 or 0, 8), byte3 or 0)
+    table.insert(output, base64[rshift(bits, 18)])
+    table.insert(output, base64[band(rshift(bits, 12), mask)])
+    table.insert(output, base64[band(rshift(bits, 6), mask)])
+    table.insert(output, base64[band(bits, mask)])
+  end
+
+  for i = 0, 1 - ((len - 1) % 3) do
+    output[#output - i] = '='
+  end
+
+  return table.concat(output)
 end
 
 return M
