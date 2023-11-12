@@ -1,5 +1,10 @@
 # nvim-osc52
 
+**Note**: As of Neovim 10.0 (specifically since [this
+PR](https://github.com/neovim/neovim/pull/25872)), native support for OSC52 has
+been added and therefore this plugin is now obsolete. Check `:h clipboard-osc52`
+for more details.
+
 A Neovim plugin to copy text to the system clipboard using the ANSI OSC52
 sequence.
 
