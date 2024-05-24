@@ -85,7 +85,7 @@ function M.copy(text)
   local text_b64 = base64.enc(text)
   local osc52 = fmt(options.osc52, text_b64)
   local msg = '%d characters copied'
-  if options.tmux_passthrough and os.getenv("TERM"):match("^tmux") then
+  if options.tmux_passthrough and (os.getenv("TERM"):match("^tmux") or os.getenv("TERM"):match("^screen")) then
     osc52 = fmt('\27Ptmux;\27%s\27\\', osc52)
     msg = msg .. ' (tmux passthrough)'
   end
